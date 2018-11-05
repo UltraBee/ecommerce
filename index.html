@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ecommerce Website</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="item">
+		<h3>iPhone</h3>
+		<img src="https://via.placeholder.com/350x150" class="img-fluid">
+		<div>
+			Product information description... 
+			<a href="#" class="productitem" data-name="iPhone" data-s="black" data-price="50000" data-id="1">Add to Cart</a>
+		</div>
+	</div>
+	<div class="item">
+		<h3>iPad</h3>
+		<img src="https://via.placeholder.com/350x150" class="img-fluid">
+		<div>
+			Product information description... 
+			<a href="#" class="productitem" data-name="iPad" data-s="white" data-price="50000" data-id="2">Add to Cart</a>
+		</div>
+	</div>
+	<div class="item">
+		<h3>Cable 3</h3>
+		<img src="https://via.placeholder.com/350x150" class="img-fluid">
+		<div>
+			Product information description... 
+			<a href="#" class="productitem" data-name="Cable 3" data-s="3" data-price="1200" data-id="3">Add to Cart</a>
+		</div>
+	</div>
+	<div class="item">
+		<h3>SD Card 32</h3>
+		<img src="https://via.placeholder.com/350x150" class="img-fluid">
+		<div>
+			Product information description... 
+			<a href="#" class="productitem" data-name="SD Card 32" data-s="32GB" data-price="3000" data-id="4">Add to Cart</a>
+		</div>
+	</div>
+	<div class="item">
+		<h3>SD Card 16</h3>
+		<img src="https://via.placeholder.com/350x150" class="img-fluid">
+		<div>
+			Product information description... 
+			<a href="#" class="productitem" data-name="SD Card 16" data-s="16GB" data-price="2000" data-id="5">Add to Cart</a>
+		</div>
+	</div>
+	<div class="item">
+		<h3>SD Card 4</h3>
+		<img src="https://via.placeholder.com/350x150" class="img-fluid">
+		<div>
+			Product information description... 
+			<a href="#" class="productitem" data-name="SD Card 4" data-s="4GB" data-price="2000" data-id="6">Add to Cart</a>
+		</div>
+	</div>
+
+	<div class="output"></div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script>
+		var shopcart =[];
+		$(document).ready(function(){
+			
+			outputCart();
+
+			$(".productitem").click(function(e){
+			e.preventDefault();
+
+			var iteminfo = $(this.dataset)[0];
+			iteminfo.qty = 1;
+			var itemincart = false;
+
+			$.each(shopcart, function(index, value){
+				if(value.id == iteminfo.id){
+					value.qty = parseInt(value.qty) + parseInt(iteminfo.qty);
+					itemincart = true;
+				}
+			})
+			if(!itemincart){
+				shopcart.push(iteminfo);
+			}
+			
+
+
+
+			sessionStorage["sc"] = JSON.stringify(shopcart);
+			outputCart();
+			})
+		})
+		
+		function outputCart(){
+			if(sessionStorage["sc"] != null){
+				shopcart = JSON.parse(sessionStorage["sc"].toString())
+			}
+			console.log(sessionStorage["sc"]);
+
+			let HTMLholder = "";
+			let total = 0;
+			$.each(shopcart, function() {
+				console.log(this.name);
+				let stotal = this.qty * this.price;
+				total += stotal;
+				HTMLholder = HTMLholder + this.name + " (" + this.s + ") " + formatMoney(this.price) + " " + this.qty + " subtotal = " + formatMoney(stotal) + "<br>";
+			})
+			HTMLholder += "total = " + formatMoney(total);
+			$(".output").html(HTMLholder);
+		}
+
+		function formatMoney(n) {
+   			return "$" + (n/100);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+	</script>
+</body>
+</html>
